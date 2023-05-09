@@ -77,17 +77,3 @@ export function is(type: string, obj: unknown) {
     const clas = Object.prototype.toString.call(obj).slice(8, -1);
     return obj !== undefined && obj !== null && clas === type;
 }
-
-
-class CustomClass {
-    constructor(
-        public firstParam: string,
-        public secondParam: number
-    ) {}
-
-    doSomething() {
-        // Do something
-    }
-}
-
-const myObj = {firstParam: "something"} as CustomClass
