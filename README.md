@@ -1,11 +1,11 @@
-# typescript-type-enforcer
+# typescript-type-forcer
 
 A simple utility lib designed to enforce typescript's types on parses :)
 
 ----------------------------------------------------
 
 ### Installing:
-`npm install type-enforcer`
+`npm install type-forcer`
 
 ----------------------------------------------------
 
@@ -84,4 +84,4 @@ And we straight up cast it to our type like so:
 `const myObject = jsonObj as CustomClass`
 Typescript will just let it slide but it won't make sure that any of the required properties are actually there and none of our functions will work so we won't really have the class we desired, it's only a fake.
 
-By using type-enforcer, we make sure our parse is not a fake, but it also **transforms** the object into the actual class.
+By using type-forcer, we make sure our parse is not a fake, but it also **transforms** the object into the actual class.
