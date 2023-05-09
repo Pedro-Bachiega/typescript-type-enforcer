@@ -4,6 +4,15 @@ A simple utility lib designed to enforce typescript's types on parses :)
 
 ----------------------------------------------------
 
+### Requiremets:
+For this to work, you **must** use the following packages in your project.
+
+`ttypescript`: https://www.npmjs.com/package/ttypescript
+`typescript-rtti`: https://www.npmjs.com/package/typescript-rtti
+`reflect-metadata`: https://www.npmjs.com/package/reflect-metadata
+
+----------------------------------------------------
+
 ### Installing:
 `npm install type-forcer`
 
