@@ -28,7 +28,7 @@ function getFieldClassName(parameter: ReflectedConstructorParameter): string {
 export function forceArrayType<T>(
     list: T[],
     klass: new (...args: any[]) => T,
-    parent = ""
+    parent = "$"
 ): T[] {
     if (list.length == 0 || typeof list[0] !== "object") return [];
     return list.map((item, index) => forceObjectType(item, klass, `${parent}.${index}`));
@@ -77,3 +77,17 @@ export function is(type: string, obj: unknown) {
     const clas = Object.prototype.toString.call(obj).slice(8, -1);
     return obj !== undefined && obj !== null && clas === type;
 }
+
+
+class CustomClass {
+    constructor(
+        public firstParam: string,
+        public secondParam: number
+    ) {}
+
+    doSomething() {
+        // Do something
+    }
+}
+
+const myObj = {firstParam: "something"} as CustomClass
