@@ -4,8 +4,8 @@ export class MissingFieldException implements Error {
     name = "MissingFieldException";
     message;
 
-    constructor(fieldName: string) {
-        this.message = `Field ${fieldName} is missing`;
+    constructor(fieldName: string, fieldValue: any) {
+        this.message = `Field ${fieldName} is missing. Current value is ${fieldValue}`;
     }
 }
 
@@ -22,40 +22,58 @@ function getClassForName(name: string, modelIndex: unknown): any {
 }
 
 function getFieldClassName(parameter: ReflectedConstructorParameter): string {
-    return parameter.type.toString().substring(6);
+    const paramType = parameter.type.toString();
+    return paramType === "any" ? paramType : paramType.substring(6);
 }
 
 export function forceArrayType<T>(
     list: T[],
     klass: new (...args: any[]) => T,
+    modelIndex: unknown,
+    debug: boolean = false,
     parent = "$"
 ): T[] {
     if (list.length == 0 || typeof list[0] !== "object") return [];
-    return list.map((item, index) => forceObjectType(item, klass, `${parent}.${index}`));
+    return list.map((item, index) => forceObjectType(item, klass, modelIndex, debug, `${parent}.${index}`));
 }
 
 export function forceObjectType<T>(
     body: T,
     klass: new (...args: any[]) => T,
     modelIndex: unknown,
+    debug: boolean = false,
     parent = "$"
 ): T {
     const tmpBody = body as Record<string, any>;
     const parameters = reflect(klass).parameters;
 
+    if (debug) {
+        console.log(`Depth: ${parent.split('.').length}\nBody: ${JSON.stringify(body)}`);
+    }
+
     const args = parameters.map((parameter) => {
         const field = tmpBody[parameter.name];
         const fieldPath = `${parent}.${parameter.name}`;
+        const isObject = typeof field === "object";
+
+        if (debug) {
+            console.log(
+                `\nField: ${fieldPath + (parameter.isOptional ? '?' : '')}: ` +
+                `${isObject ? getFieldClassName(parameter) : typeof field}` +
+                `\nValue: ${isObject ? JSON.stringify(field) : field}`
+            );
+        }
 
         if (!parameter.isOptional && (field !== 0 && !field)) {
-            throw new MissingFieldException(fieldPath);
+            throw new MissingFieldException(fieldPath, field);
         }
 
         if (field) {
-            if (typeof field !== "object") return field;
+            if (!isObject) return field;
 
             let fieldClassName = getFieldClassName(parameter);
             if (
+                fieldClassName === "any" ||
                 fieldClassName === "ObjectId" ||
                 fieldClassName === "Date"
             ) return field;

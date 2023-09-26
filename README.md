@@ -24,11 +24,11 @@ There are 3 main functions:
 * `forceObjectType`:
     * Ensures the object has all of the desired class' required properties **recursively**, throws `MissingFieldException` if any required property is null or undefined;
     * Recreates the object with all previous values and all the desired class' functions working as they should be.
-    * Ex.: `const myObject = forceObjectType(request.body, MyRequestClass, modelIndex)`
+    * Ex.: `const myObject = forceObjectType(request.body, MyRequestClass, modelIndex, showDebugLogs)`
 
 * `forceArrayType`:
     * Uses `forceObjectType` to fix all objects within the array.
-    * Ex.: `const myObjectList = forceArrayType(request.body, MyRequestClass, modelIndex)`
+    * Ex.: `const myObjectList = forceArrayType(request.body, MyRequestClass, modelIndex, showDebugLogs)`
 
 * `is`:
     * Utility function to compare an object with the desired class name.
